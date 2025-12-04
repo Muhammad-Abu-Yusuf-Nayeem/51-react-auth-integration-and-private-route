@@ -3,16 +3,19 @@ import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Root from "./components/Root";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Home from "./components/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     children: [
-      { path: "/", element: <h2>Home Page</h2> },
-      { path: "/login", element: <h2>Login Page</h2> },
-      {path:"/register", element:<h2>Register Page</h2>}
-    ]
+      { path: "/", element: <Home></Home> },
+      { path: "/login", element: <Login></Login> },
+      { path: "/register", element: <Register></Register> },
+    ],
   },
 ]);
 
