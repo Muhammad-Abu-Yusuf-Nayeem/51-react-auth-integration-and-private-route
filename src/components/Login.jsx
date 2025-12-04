@@ -1,12 +1,28 @@
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProviders";
 
 const Login = () => {
+  const { authInfo } = useContext(AuthContext);
+  const { signInUser } = authInfo;
+
   const handleLogin = (e) => {
     e.preventDefault();
     // Handle login logic here
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log("Logging in with", email, password);
+      console.log("Logging in with", email, password);
+      
+    // Use signInUser from context to log in the user
+    signInUser(email, password)
+      .then((userCredential) => {
+        // Logged in successfully
+        const user = userCredential.user;
+        console.log("Logged in user:", user);
+      })
+      .catch((error) => {
+        console.error("Error logging in user:", error);
+      });
   };
 
   return (
@@ -32,8 +48,7 @@ const Login = () => {
                     type="password"
                     name="password"
                     className="input"
-                                      placeholder="Password"
-                                
+                    placeholder="Password"
                   />
                   <div>
                     <a className="link link-hover">Forgot password?</a>
