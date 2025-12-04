@@ -32,7 +32,8 @@ const Login = () => {
                     type="password"
                     name="password"
                     className="input"
-                    placeholder="Password"
+                                      placeholder="Password"
+                                
                   />
                   <div>
                     <a className="link link-hover">Forgot password?</a>
