@@ -1,26 +1,34 @@
 import { createUserWithEmailAndPassword } from "firebase/auth/cordova";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase.init";
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
 export const AuthContext = createContext(null);
 
 const AuthProviders = ({ children }) => {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const createUser = (email, password) => {
+    setLoading(true);
     //create user logic with firebase
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signInUser = (email, password) => {
+    setLoading(true);
     // sign in user logic with firebase
     return signInWithEmailAndPassword(auth, email, password);
-    };
-    
-    const signOutUser = () => {
+  };
+
+  const signOutUser = () => {
+    setLoading(true);
     // sign out user logic with firebase
     return signOut(auth);
-  }
+  };
 
   //   onAuthStateChanged(auth, (user) => {
   //     if (user) {
@@ -37,17 +45,21 @@ const AuthProviders = ({ children }) => {
       if (currentUser) {
         console.log("User is signed in:", currentUser);
         setUser(currentUser);
+        setLoading(false);
+      } else {
+        console.log("No user is signed in.");
+        setUser(null);
       }
     });
     return () => {
-        unsubscribe();
-        setUser(null);
+      unsubscribe();
     };
   }, []);
 
   const authInfo = {
+    loading,
     createUser,
-      signInUser,
+    signInUser,
     signOutUser,
     user,
   };
