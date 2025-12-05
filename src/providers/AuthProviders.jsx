@@ -2,10 +2,13 @@ import { createUserWithEmailAndPassword } from "firebase/auth/cordova";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase.init";
 import {
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from "firebase/auth";
+const googleProvider = new GoogleAuthProvider();
 
 export const AuthContext = createContext(null);
 
@@ -30,6 +33,11 @@ const AuthProviders = ({ children }) => {
     return signOut(auth);
   };
 
+
+  const signInWithGoogle = () => {
+    setLoading(true);
+    return signInWithPopup(auth, googleProvider);
+  }
   //   onAuthStateChanged(auth, (user) => {
   //     if (user) {
   //       console.log("User is signed in:", user);
@@ -61,6 +69,7 @@ const AuthProviders = ({ children }) => {
     createUser,
     signInUser,
     signOutUser,
+    signInWithGoogle,
     user,
   };
   return (

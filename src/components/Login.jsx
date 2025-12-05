@@ -1,27 +1,42 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProviders";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { authInfo } = useContext(AuthContext);
-  const { signInUser } = authInfo;
+  const { signInUser, signInWithGoogle } = authInfo;
 
   const handleLogin = (e) => {
     e.preventDefault();
     // Handle login logic here
     const email = e.target.email.value;
     const password = e.target.password.value;
-      console.log("Logging in with", email, password);
-      
+    console.log("Logging in with", email, password);
+
     // Use signInUser from context to log in the user
     signInUser(email, password)
       .then((userCredential) => {
         // Logged in successfully
         const user = userCredential.user;
         console.log("Logged in user:", user);
+        e.target.reset();
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error logging in user:", error);
+      });
+  };
+
+  const handleGoogleSignIn = (e) => {
+    e.preventDefault();
+    signInWithGoogle()
+      .then((result) => {
+        console.log(result.user);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error signing in with Google:", error);
       });
   };
 
@@ -62,6 +77,9 @@ const Login = () => {
                   </Link>
                   .
                 </p>
+                <button onClick={handleGoogleSignIn} className="btn btn-accent">
+                  Google
+                </button>
               </form>
             </div>
           </div>
